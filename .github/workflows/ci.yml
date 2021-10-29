@@ -1,27 +1,25 @@
-# check spelling, codestyle name: Build Package
+# Build Package
 
 on: [push, pull_request, workflow_dispatch]
 
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
 
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
       - name: Setup Python
-        uses: actions/setup-python@v2.1.4
+        uses: actions/setup-python@v2
         with:
-          python-version: 3.8
+          python-version: 3.7  # must be 3.7 due to grpcio-tools==1.21.1
 
-      - name: Install Build requirements
+      - name: Install build requirements
         run: |
-          pip install -r requirements_build.txt --disable-pip-version-check
+          pip install -r requirements.txt
 
       - name: Build package
-        run: |
-          python package_grpc.py mapdl
+        run: python -m ansys.tools.protos_generator ansys/api/mapdl/v0/
 
       - name: Upload package artifact to github actions
         uses: actions/upload-artifact@v2.2.1
