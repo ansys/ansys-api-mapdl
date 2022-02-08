@@ -3,7 +3,7 @@ package ansys.api.grpcstream.v0;
 option csharp_namespace =  "Ansys.Api.GrpcStream.V0";
 
 // import "google/protobuf/empty.proto";
-import "ansys_kernel.proto";
+import "ansys/api/mapdl/v0/ansys_kernel.proto";
 
 // ================================================================================
 // =====
