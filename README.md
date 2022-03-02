@@ -1,27 +1,63 @@
-### Protocol Files for PyMAPDL Interface
-This repository includes gRPC protocol files to interface with MAPDL's
-gRPC interface.
+### ansys-api-mapdl gRPC Interface Package
 
-### Build
-To build the `ansys-grpc-mapdl` package locally, clone this
-repository, install build requirements, and build the mapdl protos
-package with
+This Python package contains the auto-generated gRPC Python interface files for
+mapdl.
+
+
+#### Installation
+
+Provided that these wheels have been published to public PyPI, they can be
+installed with:
 
 ```
-git clone https://github.com/pyansys/protos-mapdl
-cd protos-mapdl
-pip install -r requirements_build.txt
-python package_grpc.py mapdl
+pip install ansys-api-mapdl
 ```
 
-These protobuf interface files can be used to develop a custom python
-module to interface to MAPDL via gRPC.  Packages like `ansys-mapdl-core`
-require the gRPC source and stub files to be pre-packaged as a Python
-package for distribution.
+Otherwise, see the
 
 
-### CI/CD
+#### Build
 
-Packages are automatically generated from GitHub Actions for each commit and PR.  To download the automatically generated package, visit the actions tab at [Actions](https://github.com/pyansys/protos-mapdl/actions).
+To build the gRPC packages, run:
 
-To create a release, bump the version tag in `mapdl/VERSION`, and tag a release with `git tag <version>` (e.g. `0.4.0`).
+```
+pip install build
+python -m build
+```
+
+This will create both the source distribution containing just the protofiles
+along with the wheel containing the protofiles and build Python interface
+files.
+
+Note that the interface files are identical regardless of the version of Python
+used to generate them, but the last pre-built wheel for ``grpcio~=1.17`` was
+Python 3.7, so to improve your build time, use Python 3.7 when building the
+wheel.
+
+
+#### Manual Deployment
+
+After building the packages, manually deploy them with:
+
+```
+pip install twine
+twine upload dist/*
+```
+
+Note that this is automatically done through CI/CD.
+
+
+#### Automatic Deployment
+
+This repository contains GitHub CI/CD that enables the automatic building of
+source and wheel packages for these gRPC Python interface files. By default,
+these are built on PRs, the main branch, and on tags when pushing. Artifacts
+are uploaded for each PR.
+
+To publicly release wheels to PyPI, ensure your branch is up-to-date and then
+push tags. For example, for the version ``v0.5.0``.
+
+```bash
+git tag v0.5.0
+git push --tags
+```
