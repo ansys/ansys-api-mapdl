@@ -136,12 +136,21 @@ enum DataType
   SMAT	= 3;
 };
 
+enum MatType
+{
+  UPPER = 0;		///< Upper part of the matrix
+  LOWER = 1;		///< Lower part of the matrix
+  DIAG  = 2;		///< Diagonal matrix
+  FULL  = 3;		///< No Symmetry : Both Sides are filled
+};
+
 message DataResponse
 {
   kernel.v0.ValueType	stype    = 1;
   DataType		objtype  = 2;
   int32			size1    = 3;
   int32			size2    = 4;
+  MatType		mattype  = 5;
 };
 
 message SetVecDataRequest {
