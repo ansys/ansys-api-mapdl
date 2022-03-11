@@ -1,0 +1,449 @@
+syntax = "proto3";
+package ansys.api.mapdl_db.v0;
+option csharp_namespace =  "Ansys.Api.Mapdl_DB.V0";
+
+import "google/protobuf/empty.proto";
+import "ansys/api/mapdl/v0/ansys_kernel.proto";
+
+// ============================================================
+// ===== API Definition
+
+// ========== Routines for Selecting and Retrieving Nodes and Elements
+
+message NodRequest {
+  int32			next	= 1;
+}
+
+message NodResponse {
+  int32			inum	= 1;
+}
+
+message NodSelRequest {
+  int32			inum	= 1;
+  int32			ksel	= 2;
+}
+
+message ElmRequest {
+  int32			next	= 1;
+}
+
+message ElmResponse {
+  int32			inum	= 1;
+}
+
+message ElmSelRequest {
+  int32			inum	= 1;
+  int32			ksel	= 2;
+}
+
+// ========== Node Information Routines
+
+message NodInqrRequest {
+  int32			node	= 1;
+  int32			key	= 2;
+}
+
+message NodInqrResponse {
+  int32			ret	= 1;		// return value
+}
+
+message getnodRequest {
+  int32			node	= 1;
+  int32			kerr	= 2;
+  int32			kcrot	= 3;
+}
+
+message getnodResponse {
+  int32			kerr	= 1;
+  repeated double	v	= 2;		// Size = 6
+}
+
+message putnodRequest {
+  int32			node	= 1;
+  repeated double	vctn	= 2;		// Size = 6 ( 3 coord + 3 rot)
+  int32			kcrot	= 3;
+}
+
+message NodGallRequest {
+  int32			node	= 1;
+}
+
+message NodGallResponse {
+  int32		        ret	= 1;		// return value
+  repeated double	xyz	= 2;		// Size = 6 ( 3 coord + 3 rot)
+}
+
+message NodSpgtRequest {
+  int32			node	= 1;
+  repeated int32	dofs	= 2;
+  int32			ndof	= 3;
+  int32			nrot	= 4;
+  repeated double	xyzang	= 5;
+  int32			nuvect	= 6;
+}
+
+message NodSpgtResponse {
+  repeated double	unode	= 1;
+}
+
+// ========== Elem Information Routines
+
+message ElmIqrRequest {
+  int32			ielem	= 1;
+  int32			key	= 2;
+}
+
+message ElmIqrResponse {
+  int32			elmiqr	= 1;
+}
+
+message getelmRequest {
+  int32			ielem	= 1;
+}
+
+message getelmResponse {
+  int32			ielem	= 1;
+  repeated int32	elmdat	= 2;
+  int32			nnod	= 3;
+  repeated int32	nodes	= 4;
+}
+
+message putelmRequest {
+  int32			ielem	= 1;
+  repeated int32	elmdat	= 2;
+  int32			nnod	= 3;
+  repeated int32	nodes	= 4;
+}
+
+// ========== Elem Types Routines
+
+message iqretyRequest {
+  int32			itype	= 1;
+  int32			key	= 2;
+};
+
+message iqretyResponse {
+  int32			iqr	= 1;
+};
+
+message getetyRequest {
+  int32			itype	= 1;
+};
+
+message getetyResponse {
+  int32			itype	= 1;
+  int32			ielx_sz = 2;
+  repeated int32	ielx	= 3;
+};
+
+message putetyRequest {
+  int32			itype	= 1;
+  int32			n	= 2;
+  repeated int32	ielx	= 3;
+};
+
+// ========== Material Properties Routines
+
+message iqrmpRequest {
+  int32			mat	= 1;
+  int32			iprop	= 2;
+  int32			key	= 3;
+};
+
+message iqrmpResponse {
+  int32			ret	= 1;
+};
+
+message getmpRequest {
+  int32			mat	= 1;
+  int32			iprop	= 2;
+};
+
+message getmpResponse {
+  int32			ret	= 1;
+  repeated double	temp	= 2;
+  repeated double	prop	= 3;
+};
+
+message putmpRequest {
+  int32			mat	= 1;
+  int32			iprop	= 2;
+  int32			ntab	= 3;
+  repeated double	temp	= 4;
+  repeated double	prop	= 5;
+};
+
+
+// ========== Coordinate Systems Routines
+
+message iqrcsyRequest{
+  int32			ncsy	= 1;
+  int32			key	= 2;
+};
+
+message iqrcsyResponse{
+  int32			ret	= 1;
+};
+
+message getcsyRequest{
+  int32			ncsy	= 1;
+  repeated int32	csyinx	= 2;
+};
+
+message getcsyResponse{
+  int32			ret	= 1;
+  repeated double	csydpx	= 2;  
+};
+
+message putcsyRequest{
+  int32			ncsy	= 1;
+  repeated int32	csyinx	= 2;
+  repeated double	csydpx	= 3;  
+};
+
+// ========== Nodal Results API
+
+message NodResIqrRequest {
+  int32			inode	= 1;
+  int32			key	= 2;
+}
+
+message NodResIqrResponse {
+  int32			iqr	= 1;
+}
+
+message NodResGetRequest {
+  int32			inode	= 1;
+  int32			ndf	= 2;
+  repeated int32	idf	= 3;
+}
+
+message NodResGetResponse {
+  repeated double	value	= 1;
+}
+
+message NodResPutRequest {
+  int32			inode	= 1;
+  int32			ndf	= 2;
+  repeated int32	idf	= 3;
+  repeated double	value	= 4;
+}
+
+message NodResDelRequest {
+  int32			inode	= 1;
+  int32			ndf	= 2;
+  repeated int32	idf	= 3;
+}
+
+enum ElmResult
+{
+  UNKNOWN = 0;
+
+  EMS	= 1;	// Element's Misc Summable Data (emsiqr, emsget, emsput, emsdel)
+  ENF	= 2;	// Element Nodal Forces (enfiqr, enfget, enfput, enfdel)
+  ENS	= 3;	// Element's Nodal Stresses (ensiqr, ensget, ensput, ensdel)
+  ESF	= 4;	// Element Surf Stress Data (esfiqr, esfget, esfput, esfdel)
+  ENG	= 5;	// Element's Energies (engiqr, engget, engput, engdel)
+  EGR	= 6;	// Element's Nodal Gradients
+  EEL	= 7;	// Element's Nodal Elastic Strains
+  EPL	= 8;	// Element's Nodal Plastic Strains
+  ECR	= 9;	// Element's Nodal Creep Strains
+  RTH	= 10;	// Element's Nodal Thermal Strains
+  EUL	= 11;	// Element's Euler Angles
+  EFX	= 12;	// Element Fluxes
+  ELF	= 13;	// Element Local Forces
+  EMN	= 14;	// Element Misc. Non-Summable Data
+  ECD	= 15;	// Element Current Densities
+  ENL	= 16;	// Element Nonlinear Tables
+  EHC	= 17;	// Element Heat Generations
+}
+
+message ElmResIqrRequest {
+  ElmResult		type	= 1;
+  int32			ielem	= 2;
+  int32			key	= 3;
+}
+
+message ElmResIqrResponse {
+  int32			iqr	= 1;
+}
+
+message ElmResGetRequest {
+  ElmResult		type	= 1;
+  int32			ielem	= 2;
+}
+
+message ElmResGetResponse {
+  int32			get	= 1;
+  repeated double	value	= 2;
+}
+
+message ElmResPutRequest {
+  ElmResult		type	= 1;
+  int32			ielem	= 2;
+  int32			nval	= 3;
+  repeated double	value	= 4;
+}
+
+message ElmResDelRequest {
+  ElmResult		type	= 1;
+  int32			ielem	= 2;
+}
+
+message GetElmInfoRequest {
+  string		inquire = 1;
+}
+
+message GetElmInfoResponse {
+  int32			value	= 1;
+}
+
+message GetElmDataRequest {
+  string	kchar		= 1;
+  int32		elemId		= 2;
+  int32		kMatRecPt	= 3;
+  int32		ncomp		= 4;
+}
+
+message GetElmDataResponse {
+  repeated double	vect	= 1;
+}
+
+message PutElmDataRequest {
+  string	inquire		= 1;
+  int32		elemId		= 2;
+  int32		kIntg		= 3;
+  int32		nvect		= 4;
+  repeated double	vect	= 5;
+}
+
+message PutElmDataResponse {}
+
+message putElmMatRec1Request {
+  int32		matRecordIndex	= 1;
+  int32		kMatRecPt	= 2;
+  int32			elemId	= 3;
+  int32			ncomp	= 4;
+  repeated double	vect	= 5;  
+}
+
+message putElmMatRec1Response {}
+
+message INISIsNewVersionUsedRequest {}
+message INISIsNewVersionUsedResponse {
+  int32			ret	= 1;
+}
+
+service MapdlDbService{  
+  
+  rpc NodNext( NodRequest)		returns( NodResponse);			// Get Next Node Number -				ndnext  
+  rpc NodPrev( NodRequest)		returns( NodResponse);			// Get Prev Node Number -				ndprev  
+  rpc NodNextDefined( NodRequest)	returns( NodResponse);			// Get Number of the Next Defined Node -		ndnxdf  
+  rpc NodSel( NodSelRequest)		returns( google.protobuf.Empty);	// Select, Unselect, Delete or Invert a Node -  	ndsel
+    
+  rpc ElmNext( ElmRequest)		returns( ElmResponse);			// Get the Number of the Next Element -		        elnext
+  rpc ElmPrev( ElmRequest)		returns( ElmResponse);			// Get the Number of the Prev Element -		        elprev  
+  rpc ElmNextDefined( ElmRequest)	returns( ElmResponse);			// Get the Number of the Next Defined Element -	        elnxdf  
+  rpc ElmSel( ElmSelRequest)		returns( google.protobuf.Empty);	// Select, Unselect, Delete or Invert an Element -	elsel
+
+  rpc NodInqr( NodInqrRequest)		returns ( NodInqrResponse);		// Get Information about a Node -			ndinqr
+  rpc getNod( getnodRequest)		returns( getnodResponse);		// Get a Nodal Point -				        getnod
+  rpc putNod( putnodRequest)		returns( kernel.v0.EmptyResponse);	// Storing a Node -					putnod
+
+  rpc getAllNod( kernel.v0.EmptyRequest) returns ( stream getnodResponse);
+  rpc getAllNodC( kernel.v0.EmptyRequest) returns ( stream kernel.v0.Chunk);
+  rpc putAllNod( stream putnodRequest) returns ( kernel.v0.EmptyResponse);
+
+  rpc NodGall( NodGallRequest)		returns( NodGallResponse);		// Get XYZ/Rotation Coordinates Vector for a Node -	ndgall
+  rpc NodSpgt( NodSpgtRequest)		returns( NodSpgtResponse);		// Get the Nodal Solution for a Node of an Element -	ndspgt
+  
+  rpc ElmIqr( ElmIqrRequest)		returns( ElmIqrResponse);		// Get Information about an Element -			elmiqr
+  rpc getElm( getelmRequest)		returns( getelmResponse);		// Get an Element's Attributes and Nodes -		elmget
+  rpc putElm( putelmRequest)		returns( kernel.v0.EmptyResponse);	// Storing an Element -					elmput
+
+  rpc getAllElm( kernel.v0.EmptyRequest) returns ( stream getelmResponse);
+  rpc getAllElmC( kernel.v0.EmptyRequest) returns ( stream kernel.v0.Chunk);
+  rpc putAllElm( stream putelmRequest)	  returns ( kernel.v0.EmptyResponse);
+
+  rpc iqrEty( iqretyRequest)		returns( iqretyResponse);		// Get a Data Item about an Element Type -	etyiqr
+  rpc getEty( getetyRequest)		returns( getetyResponse);		// Get Information about an Element Type -	etyget
+  rpc putEty( putetyRequest)		returns( kernel.v0.EmptyResponse);	// Storing Element Type Data -			etyput
+
+  rpc getAllEty( kernel.v0.EmptyRequest) returns ( stream getetyResponse);
+  rpc getAllEtyC( kernel.v0.EmptyRequest) returns ( stream kernel.v0.Chunk);
+  rpc putAllEty( stream putetyRequest)	returns ( kernel.v0.EmptyResponse);
+
+
+  // Get Information about Element Characteristics -	echrtr
+  // Select, Unselect, Delete or Invert an Elem Type -	etysel
+
+  rpc iqrMp( iqrmpRequest)		returns( iqrmpResponse);		// Get Information about an Material Property -	mpinqr
+  rpc getMp( getmpRequest)		returns( getmpResponse);		// Get a Material Property Table -		mpget
+  rpc putMp( putmpRequest)		returns( kernel.v0.EmptyResponse);	// Storing a Material Property Table -		mpput
+  rpc delMp( getmpRequest)		returns( kernel.v0.EmptyResponse);	// Delete a Material Property Table -		mpdel
+
+  // Get Information about a Real Constant Set -	rlinqr
+  // Get Real Constant Data -				rlget
+  // Select or Delete a Real Constant Set -		rlsel
+  
+  rpc iqrCsy( iqrcsyRequest)		returns( iqrcsyResponse);		// Get Information about a Coordinate System -	csyiqr
+  rpc getCsy( getcsyRequest)		returns( getcsyResponse);		// Get a Coordinate System -			csyget
+  rpc putCsy( putcsyRequest)            returns( kernel.v0.EmptyResponse);      // Store a Coordinate System -			csyput
+  rpc delCsy( getcsyRequest)            returns( kernel.v0.EmptyResponse);      // Delete a Coordinate System -			csydel
+
+  // Get Information about a coupled Set -		cpinqr
+  // Get a coupled Set -				cpget
+  // Store a coupled Set -				cpput
+  // Select / Delete a couple Set -			cpsel
+
+  // Get Information about a Constraint Eq. Set -	ceinqr
+  // Get a Constaint Equation -				ceget
+  // Store a Constaint Equation -			ceput
+  // Delete / Select a Constaint Equation -		cesel
+  
+  // Get Information about Constaints -			disiqr
+  // Get a Constaint at a Node -			disget
+  // Store a Constraint at a Node -			disput
+  // Delete a Constraint at a Node -			disdel
+
+  // Get Information about Nodal Loads -		foriqr
+  // Get a Nodal Load at a Node -			forget
+  // Store a Nodal Load at a Node -			forput
+  // Delete a nodal Load at a Node -			fordel
+  
+  // Get Info about a Nodal Body Load -			ansNodeBodyLoadlqr
+  // Get a Nodal Body Load Value -			ansNodeBodyLoadGet
+  // Store a Nodal Body Load -				ansNodeBodyLoadPut
+  // Delete a Nodal Body Load -				ansNodeBodyLoadDel
+
+  // Get Info about a Element Body Load -		ansElemBodyLoadlqr
+  // Get a Elem Body Load Value -			ansElemBodyLoadGet
+  // Store a Elem Body Load -				ansElemBodyLoadPut
+  // Delete a Elem Body Load -				ansElemBodyLoadDel
+
+  // Get Info about a Elem Surface Load -		ansElemSurfLoadlqr
+  // Get a Elem Surface Load Value -			ansElemSurfLoadGet
+  // Store a Elem Surface Load -			ansElemSurfLoadPut
+  // Delete a Elem Surface Load -			ansElemSurfLoadDel
+
+  // Nodal Results API
+
+  rpc	NodResIqr( NodResIqrRequest)		returns( NodResIqrResponse);		// Get Information about Nodal Results -		dspiqr
+  rpc	NodResGet( NodResGetRequest)		returns( NodResGetResponse);		// Get a Nodal Result from the DB -			dspget  
+  rpc	NodResPut( NodResPutRequest)		returns( google.protobuf.Empty);	// Store a Result at a Node -				dspput  
+  rpc	NodResDel( NodResDelRequest)		returns( google.protobuf.Empty);	// Delete a Result at a Node -			        dsldel
+
+  // Element Results API
+  
+  rpc	ElmResIqr( ElmResIqrRequest)		returns( ElmResIqrResponse);		// Get Information about Element Results -		iqr  
+  rpc	ElmResGet( ElmResGetRequest)		returns( ElmResGetResponse);		// Get an Element Result from the DB -		        get  
+  rpc	ElmResPut( ElmResPutRequest)		returns( google.protobuf.Empty);	// Store a Result at an Element -			put  
+  rpc	ElmResDel( ElmResDelRequest)		returns( google.protobuf.Empty);	// Delete a Result at an Element -			del
+
+  rpc	getElmInfo( GetElmInfoRequest)		returns( GetElmInfoResponse);		// 
+  rpc	getElmData( GetElmDataRequest)		returns( GetElmDataResponse);		// 
+  rpc	putElmData( PutElmDataRequest)		returns( PutElmDataResponse);		//
+  rpc	putElmMatRec1( putElmMatRec1Request)	returns( putElmMatRec1Response);	//
+
+  rpc	INISIsNewVersionUsed( INISIsNewVersionUsedRequest)	returns( INISIsNewVersionUsedResponse);
+}
