@@ -31,7 +31,7 @@ jobs:
         run: |
           mkdir tmp
           cd tmp
-          python -c "import ansys.api.mapdl.v0; print('Sucessfully imported ansys.api.mapdl.v0')"
+          python -c "import ansys.api.mapdl.v0; print('Successfully imported ansys.api.mapdl.v0')"
           python -c "from ansys.api.mapdl import __version__; print(__version__)"
       - name: Upload packages
         uses: actions/upload-artifact@v2
@@ -48,7 +48,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.10
+          python-version: 3.9
 
       - uses: actions/download-artifact@v2
 
