@@ -48,11 +48,11 @@ message Chunk
 
 message ArrayShape
 {
-  uint32 dimension_1;
-  uint32 dimension_2;
-  uint32 dimension_3;
-  uint32 dimension_4;
-  uint32 dimension_5;
+  uint32 dimension_1 = 1;
+  uint32 dimension_2 = 2;
+  uint32 dimension_3 = 3;
+  uint32 dimension_4 = 4;
+  uint32 dimension_5 = 5;
 }
 
 message CreateArrayRequest
