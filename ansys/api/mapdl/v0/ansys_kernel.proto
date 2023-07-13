@@ -60,7 +60,7 @@ message CreateArrayRequest
   string array_name = 1;
   ArrayShape shape = 2;
   bytes payload = 3;
-  uint64 size = 4;
+  ValueType value_type = 4;
 }
 
 message CreateArrayResponse
@@ -78,7 +78,7 @@ message GetArrayResponse{
   string array_name = 1;
   ArrayShape shape = 2;
   bytes payload = 3;
-  uint64 size = 4;
+  ValueType value_type = 4;
 }
 
 // message ChunkResponse {
