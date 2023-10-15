@@ -189,10 +189,10 @@ message DownloadFileRequest {
 // ===== API Definition
 
 service MapdlService{
-  
+
   rpc SendCommand( CmdRequest)				returns ( CmdResponse);
   rpc SendCommandS( CmdRequest)				returns ( stream CmdOutput);
-  
+
   rpc InputFileLocal( stream CmdRequest)		returns ( stream kernel.v0.Chunk);
   rpc InputFile(  InputFileRequest)			returns ( stream kernel.v0.Chunk);
   rpc InputFileS( InputFileRequest)			returns ( stream CmdOutput);
@@ -216,6 +216,9 @@ service MapdlService{
   rpc Get( GetRequest)					returns ( GetResponse);
   rpc VGet( GetRequest)					returns ( VariableResponse);
   rpc VGet2( GetRequest)				returns ( stream kernel.v0.Chunk);
+
+  rpc CreateArray(kernel.v0.CreateArrayRequest) returns (kernel.v0.CreateArrayResponse);
+  rpc GetArray(kernel.v0.GetArrayRequest) returns (kernel.v0.GetArrayResponse);
 
   rpc Ctrl( kernel.v0.CtrlRequest)			returns ( kernel.v0.CtrlResponse);
 

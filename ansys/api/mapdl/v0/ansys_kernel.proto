@@ -10,7 +10,7 @@ message EmptyResponse {}
 
 message CtrlRequest {
   string		ctrl = 1;
-  string		opt1 = 2;  
+  string		opt1 = 2;
 }
 
 message CtrlResponse {
@@ -46,6 +46,41 @@ message Chunk
   int64		size = 5;
 }
 
+message ArrayShape
+{
+  uint32 dimension_1 = 1;
+  uint32 dimension_2 = 2;
+  uint32 dimension_3 = 3;
+  uint32 dimension_4 = 4;
+  uint32 dimension_5 = 5;
+}
+
+message CreateArrayRequest
+{
+  string array_name = 1;
+  ArrayShape shape = 2;
+  bytes payload = 3;
+  ValueType value_type = 4;
+}
+
+message CreateArrayResponse
+{
+  string response = 1;
+  int32 status = 2;
+}
+
+message GetArrayRequest
+{
+  string array_name = 1;
+}
+
+message GetArrayResponse{
+  string array_name = 1;
+  ArrayShape shape = 2;
+  bytes payload = 3;
+  ValueType value_type = 4;
+}
+
 // message ChunkResponse {
 //   string name = 1;
 //   // bytes payload = 2;
@@ -62,7 +97,7 @@ message Chunk
 //     DCPLX   = 7;
 //   }
 //   ValueType value_type = 4;
-  
+
 // }
 
 // message ArrayChunkResponse{
@@ -88,7 +123,7 @@ message Matrix
     DENSE =	0;
     SYM =	1;
     DIAG =	2;
-    CSR =	3;    
+    CSR =	3;
   }
 
   enum	SideOption {
@@ -97,8 +132,8 @@ message Matrix
     FULL  =	2;
   }
 
-  StorageOption		Storage  = 4;  
-  SideOption		side	 = 5;			
+  StorageOption		Storage  = 4;
+  SideOption		side	 = 5;
 }
 
 message DenseMatrix			// For DENSE / SYM or DIAG Matrices
@@ -115,7 +150,7 @@ message SparseMatrix
   int32			maxlen	 = 2;
   int64			nval     = 3;
   bool			sym	 = 4;
- 
+
   repeated int64	rows	 = 5;
   repeated int32	colsIdx	 = 6;
   repeated double	values	 = 7;	// For now only support double values. Will need to be generalized
