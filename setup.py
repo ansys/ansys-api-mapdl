@@ -34,7 +34,7 @@ if __name__ == "__main__":
         long_description_content_type='text/markdown',
         url=f"https://github.com/ansys/{package_name}",
         license="MIT",
-        python_requires=">=3.7",
+        python_requires=">=3.10",
         install_requires=["grpcio~=1.17", "protobuf>=3.19,<7"],
         packages=setuptools.find_namespace_packages(".", include=("ansys.*",)),
         package_data={
